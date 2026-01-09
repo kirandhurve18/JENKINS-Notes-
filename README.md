@@ -82,4 +82,70 @@ dist
 .git
 ````
 
+# but iam not even getting access to ssh the jenkins server for that what to do -- for that we can do is 
+
+✅ OPTION 1: CLEAN SPACE DIRECTLY FROM JENKINS UI (NO SSH)
+
+🟢 1️⃣ Delete Old Builds via UI (FAST)
+
+Open Jenkins → Job
+
+Click Build History
+
+Delete old builds manually (❌ button)
+
+✔ This frees /var/lib/jenkins/jobs/*/builds/
+
+🟢 2️⃣ Configure “Discard Old Builds” (VERY IMPORTANT)
+
+For EACH job:
+
+````
+Job → Configure
+✔ Discard old builds
+Max builds: 5
+Max days: 7
+Save
+````
+✔ Prevents future disk issues
+
+🟢 3️⃣ Delete Workspace via UI
+
+Jenkins → Job
+
+Click Workspace
+
+Click Wipe Out Workspace
+
+✔ Frees /var/lib/jenkins/workspace
+
+🟢 4️⃣ Remove Artifacts (If configured)
+
+Go to build
+
+Click Artifacts
+
+Delete heavy zip/dist files
+
+✅ OPTION 2: USE SCRIPT CONSOLE (NO SSH – POWERFUL)
+
+✅ OPTION 3: IF JENKINS IS ON CLOUD (AWS/GCP/Azure)
+
+Even without SSH, you can:
+
+🔹 Increase Disk Size (NO DATA LOSS)
+AWS EC2:
+
+EC2 → Volumes → Modify Volume → Increase size
+
+GCP Compute Engine:
+
+Edit disk → Increase size → Reboot VM
+
+Azure:
+
+Resize Disk → Restart VM
+
+✔ Jenkins automatically gets more space
+
 
