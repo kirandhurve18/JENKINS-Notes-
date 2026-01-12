@@ -277,12 +277,14 @@ sudo mount -a
 
 ✅ STEP 4: Use disk for Jenkins (BEST PRACTICE)
 Move Jenkins data
+
+````
 sudo systemctl stop jenkins
 sudo rsync -avx /var/lib/jenkins/ /data/jenkins/
 sudo mv /var/lib/jenkins /var/lib/jenkins_old
 sudo ln -s /data/jenkins /var/lib/jenkins
 sudo chown -R jenkins:jenkins /data/jenkins
-
+````
 
 Start Jenkins:
 
