@@ -288,8 +288,10 @@ sudo chown -R jenkins:jenkins /data/jenkins
 
 Start Jenkins:
 
+````
 sudo systemctl start jenkins
 sudo systemctl status jenkins
+````
 
 🔥 OPTION B (NOT RECOMMENDED)
 
