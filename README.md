@@ -171,4 +171,139 @@ sudo apt autoclean
 sudo apt autoremove -y
 ````
 
+============================================================================================
+OPTION A (RECOMMENDED): Attach a NEW data disk to the VM
+
+Best for Jenkins / Docker / data storage
+
+🔹 STEP 1: Create a new Persistent Disk
+
+Go to GCP Console
+
+Navigate to
+Compute Engine → Disks
+
+Click CREATE DISK
+
+Fill details:
+
+Name: jenkins-data-disk
+
+Type: Balanced persistent disk
+
+Size: 50 GB (or more)
+
+Zone: us-central1-c ⚠️ (same as VM)
+
+Encryption: Default
+
+👉 Click Create
+
+🔹 STEP 2: Attach disk to the VM
+
+Go to
+Compute Engine → VM instances
+
+Click jenkins-server
+
+Click Edit
+
+Scroll to Additional disks
+
+Click Attach existing disk
+
+Select jenkins-data-disk
+
+Mode: Read/Write
+
+Click Save
+
+✅ Disk is now attached to the VM
+
+✅ STEP 3: Prepare the disk inside Linux (VERY IMPORTANT)
+
+SSH into your VM.
+
+3.1 Verify disk is visible
+lsblk
+
+
+You will see something like:
+
+sdb    50G
+
+3.2 Create filesystem
+sudo mkfs.ext4 /dev/sdb
+
+3.3 Create mount point
+sudo mkdir /data
+
+3.4 Mount disk
+sudo mount /dev/sdb /data
+
+
+Verify:
+
+df -h
+
+
+You should see:
+
+/dev/sdb   50G   ...   /data
+
+3.5 Make mount permanent (CRITICAL)
+sudo blkid /dev/sdb
+
+
+Copy the UUID.
+
+Edit fstab:
+
+sudo nano /etc/fstab
+
+
+Add:
+
+UUID=<UUID>   /data   ext4   defaults,nofail   0   2
+
+
+Save & exit.
+
+Test:
+
+sudo mount -a
+
+✅ STEP 4: Use disk for Jenkins (BEST PRACTICE)
+Move Jenkins data
+sudo systemctl stop jenkins
+sudo rsync -avx /var/lib/jenkins/ /data/jenkins/
+sudo mv /var/lib/jenkins /var/lib/jenkins_old
+sudo ln -s /data/jenkins /var/lib/jenkins
+sudo chown -R jenkins:jenkins /data/jenkins
+
+
+Start Jenkins:
+
+sudo systemctl start jenkins
+sudo systemctl status jenkins
+
+🔥 OPTION B (NOT RECOMMENDED)
+
+Attaching volume as boot disk or resizing root partition — risky and unnecessary.
+
+🧠 WHY THIS IS THE RIGHT WAY
+Benefit	Reason
+No OS break	Root disk untouched
+Easy expansion	Resize data disk anytime
+Stable Jenkins	No disk-full crashes
+Industry standard	Used in prod setups
+✅ Final verification
+
+Run:
+
+df -h
+lsblk
+sudo systemctl status jenkins
+# Attached new disk to the vm --
+
 
