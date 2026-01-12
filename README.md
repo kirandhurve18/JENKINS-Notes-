@@ -172,6 +172,8 @@ sudo apt autoremove -y
 ````
 
 ============================================================================================
+# Attached new disk to the vm --
+
 OPTION A (RECOMMENDED): Attach a NEW data disk to the VM
 
 Best for Jenkins / Docker / data storage
@@ -304,6 +306,6 @@ Run:
 df -h
 lsblk
 sudo systemctl status jenkins
-# Attached new disk to the vm --
+
 
 
