@@ -148,4 +148,27 @@ Resize Disk → Restart VM
 
 ✔ Jenkins automatically gets more space
 
+================================================================================
+
+:: IF THE SPACE IS FULL YOU HAVE TO DO ONE-THING ::
+
+# Confirm Disk Usage 
+
+````
+df -Th 
+````
+
+# Find what is eating space 
+
+````
+sudo du -xh / | sort -h | tail -20
+````
+
+# clean space 
+````
+sudo apt clean
+sudo apt autoclean
+sudo apt autoremove -y
+````
+
 
