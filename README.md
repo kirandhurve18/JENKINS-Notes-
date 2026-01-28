@@ -336,6 +336,35 @@ This creates:
 ````
 k8s-ca.crt
 ````
+Step 2: Import cert into Java truststore (on Jenkins server)
+
+Find Java path:
+
+````
+readlink -f $(which java)
+````
+Then run (example path, adjust if needed):
+````
+sudo keytool -importcert \
+  -alias k8s-api \
+  -keystore /usr/lib/jvm/java-17-openjdk-amd64/lib/security/cacerts \
+  -file k8s-ca.crt
+````
+Password when asked:
+
+````
+changeit
+````
+type :
+````
+yes
+````
+Step 3: Restart Jenkins
+
+````
+sudo systemctl restart jenkins
+````
+
 
 
 
