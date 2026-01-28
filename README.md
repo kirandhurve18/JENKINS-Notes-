@@ -310,6 +310,34 @@ Run:
 df -h
 lsblk
 sudo systemctl status jenkins
+-----------------------------------------------
+
+:::   ERROR to find this  :::
+
+Credentials from Kubernetes Secrets will not be available.See the log for more details.
+
+he key line is:
+
+# SunCertPathBuilderException: unable to find valid certification path to requested target SSLHandshakeException: PKIX path building failed
+
+That means:
+👉 Jenkins does NOT trust the TLS certificate of your Kubernetes API server.
+
+# Fix Option 1 (Best & Clean): Import Kubernetes CA into Jenkins Java Truststore
+
+Step 1: Get Kubernetes cluster CA certificate
+
+Run from Jenkins server (or any machine with kubectl working):
+````
+kubectl config view --raw -o jsonpath='{.clusters[0].cluster.certificate-authority-data}' | base64 -d > k8s-ca.crt
+````
+This creates:
+
+````
+k8s-ca.crt
+````
+
+
 
 
 
