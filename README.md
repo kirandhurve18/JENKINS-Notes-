@@ -365,6 +365,21 @@ Step 3: Restart Jenkins
 sudo systemctl restart jenkins
 ````
 
+========================================================================================
+
+## Why ImagePullBackOff happens
+agar aisa erreo aaya toh check karna kubernet konsi image pull kar raha hai 
+
+
+Usually one of these:
+
+Wrong image name in deployment.yaml
+
+Image not pushed to DockerHub
+
+Private DockerHub repo (needs secret)
+
+Typo in tag (latest vs v1, etc)
 
 
 
